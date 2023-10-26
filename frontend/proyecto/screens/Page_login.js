@@ -1,144 +1,95 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Dimensions,TouchableOpacity, ImageBackground,Image} from 'react-native';
-import logo from '../assets/upc.png';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image,TouchableWithoutFeedback, Keyboard,ScrollView   } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { TextInput, Button, PaperProvider } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native'; // Importa useNavigation desde React Navigation
+import Page_registrar from './Page_registrar';
+
+const Page_registro = () => <Page_registrar />;
 
 
-function Page_login({navigation}) {
-  const fondo = {uri: "https://png.pngtree.com/background/20220714/original/pngtree-green-small-clear-concise-and-refreshing-picture-image_1612224.jpg"};
-  const [Username, setUsername] = useState('');
-  const [Password, setPassword] = useState('');
-  const [errorUsername, setErrorUsername] = useState('');
-  const [errorPassword, setErrorPassword] = useState('');
+const Page_login = () => (
+  <SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Page_logins />
+    </GestureHandlerRootView>
+  </SafeAreaProvider>
+);
 
-  const limpiarCampos = () => {
-   
-    setUsername('');
-    setPassword('');
-   
-    setErrorUsername('');
-    setErrorPassword('');
+const Page_logins = () => {
+  const handleDismissKeyboard = () => {
+    Keyboard.dismiss();
   };
+  const [text, setText] = useState("");
+  const [password, setPassword] = useState("");
+  const navigation = useNavigation(); // Obtiene el objeto de navegación
 
-  const validarcampos=() =>{
-    let Errores = false;
-
-    if (Username.trim() === '') {
-      Errores = true;
-    } else {
-      setErrorUsername('');
-    }
-
-    if (Password.trim() === '') {
-      Errores = true;
-    } else {
-      setErrorPassword('');
-    }
-
-    if (!Errores) {
-      navigation.navigate('Entrar');
-      limpiarCampos();
-    }else{
-      setErrorUsername('Aun hay campos Vacios');
-    }
-
-  }
-  
   return (
+    <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <View style={styles.container}>
+      <Image source={require('../assets/Capa.png')} style={styles.imagen} />
+      <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#000000' }}>Bienvenido</Text>
+      <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#000000',textAlign:'center' }}>SISTEMA DE GESTION DE PROYECTOS DE GRADO</Text>
 
-       <ImageBackground source={fondo} resizeMode='cover' style = {styles.fondoimagen}>
-       <Image
-         source={logo}
-         style = {styles.logo}
-      />
-      <Text style = {styles.titulo}>Universidad Popular del Cesar</Text>
-      <Text style = {styles.subtitulo}>Control de Proyectos</Text>
-      {errorUsername ? <Text style={styles.errortext}>{errorUsername}</Text> : null}
+      <TextInput label="Usuario" value={text} onChangeText={text => setText(text)} style={styles.input} />
+      <TextInput label="Contraseña" value={password} onChangeText={password => setPassword(password)} style={styles.input} />
 
-       <TextInput style = {styles.ingdatos}
-        placeholder="Username"
-        value={Username}
-        onChangeText={(text) => setUsername(text)}
-       />
-       
-       <TextInput style = {styles.ingdatos}
-        placeholder="Password"
-        value={Password}
-        secureTextEntry= {true}
-        onChangeText={(text) => setPassword(text)}
-        
-       />
-       <Text>Olvidaste tu contraseña?</Text>
-       
-       <TouchableOpacity style={styles.button} onPress={() => { validarcampos()}}>
-        <Text style={styles.text}>Ingresar</Text>
-     </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Registro')}>
+        <Text >Aun no tienes cuenta?, regístrate pulsando aquí</Text>
+      </TouchableOpacity>
 
-       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Registro')} >
-        <Text style={styles.text}>Registrate</Text>
-       </TouchableOpacity>
-   
-       </ImageBackground>
-
-      <StatusBar style="auto" />
+      <Button icon="login" mode="contained" style={styles.boton} onPress={()=>navigation.navigate("Entrar")}>Entrar</Button>
     </View>
+    </TouchableWithoutFeedback>
   );
-}
-export default  Page_login;
+};
+
+export default Page_login;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  fondoimagen:{
-    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  logo:{
-     height: 150,
-     width: 170
+  imagen: {
+    width: 200,
+    height: 200,
   },
-  titulo:{
-     fontSize: 30,
-     textAlign: 'center',
-     color: 'black',
-     fontWeight: 'bold',
-
+  input: {
+    marginVertical: 10,
+    width: 300,
+    backgroundColor: '#ffffff',
   },
-  subtitulo:{
-      fontSize: 25,
-      color: '#49a300',
-      marginTop: 15
+  boton: {
+    marginVertical: 20,
+    width: 300,
   },
-  ingdatos:{
-     borderWidth: 1,
-     borderColor: 'gray',
-     width: '80%',
-     height: 50,
-     padding: 5,
-     marginTop: 25,
-     borderRadius: 30,
-     backgroundColor: '#c7c7c7',
-     paddingStart: 20,
+  linkText: {
+    color: 'blue', // Puedes cambiar el color según tu preferencia
+    textDecorationLine: 'underline',
   },
-  button:{
-    marginTop: 20,
-    width: '80%',
-    height: 50,
-    backgroundColor: 'green',
-    borderRadius: 20
- },
- text:{
-     fontSize: 25,
-     fontWeight: 'bold',
-     textAlign: 'center',
-     color: 'white',
-     marginTop: 5,
- },
- errortext:{
-  color: 'red'
- }
 });
+
+const modal = () => {
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
+
+  return (
+    <PaperProvider>
+      <Portal>
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+          <Text>Example Modal.  Click outside this area to dismiss.</Text>
+        </Modal>
+      </Portal>
+      <Button style={{marginTop: 30}} onPress={showModal}>
+        Show
+      </Button>
+    </PaperProvider>
+  );
+};

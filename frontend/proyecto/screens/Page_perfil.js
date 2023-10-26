@@ -1,57 +1,52 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { Card, Divider } from 'react-native-paper';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-function Page_perfil({ navigation }) {
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Avatar, Button, Card, Text, Modal, Portal, Provider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+
+const Page_perfil = () => {
+  const LeftContent = props => <Avatar.Icon {...props} icon="account" style={{ width: 50, height: 50 }} />
+
   return (
-    <View style= {styles.container}>
-      <Text style = {styles.Titulo}>TU PERFIL</Text>
-      
-      <Card elevation={5} style = {styles.card}>
-      <FontAwesome name='user-circle-o' style = {{fontSize: 80, marginTop: 15, textAlign: 'center'}}/>
-      <Text style={styles.texto}> CEDULA:  12345678</Text>
-       <Text style={styles.texto}> NOMBRES:  DAVID ESTEBAN </Text>
-       <Text style={styles.texto}> APELLIDOS: GOMEZ ESPITIA</Text>
-       <Text style={styles.texto}> USUARIO:  Destebangomez</Text>
-       <Text style={styles.texto}> EMAIL:  destebangomez@unicesar.edu.co</Text>
-       <Text style={styles.texto}> FACULTAD:  Ingenierias y Tecnologias</Text>
-       <Text style={styles.texto}> PROGRAMA:  Ingenieria en Sistemas</Text>
-      </Card>
-      
-    </View>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#000000' }}>Perfil</Text>
+          <Card style={styles.card}>
+            <Card.Title title="ROL" subtitle="Docente" left={LeftContent} />
+            <Card.Content>
+              <Text variant="titleMedium">Nombre: juan</Text>
+              <Text variant="titleMedium">Apellido: jhonson</Text>
+              <Text variant="titleMedium">Telefono: 3106326313</Text>
+              <Text variant="titleMedium">Correo: jhonson@gmial.com</Text>
+              <Text variant="titleMedium">Usuario: jhonson</Text>
+              <Text variant="titleMedium">Contraseña: **********</Text>
+              <Text variant="titleMedium">Facultad: Ingenieria</Text>
+              <Text variant="titleMedium">Programa: Ingenieria de sistemas</Text>
+            </Card.Content>
+            <Card.Actions>
+              <Button mode="contained" >Editar información</Button>
+            </Card.Actions>
+          </Card>
+        </View>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
-    container:{
-       flex: 1,
-       alignItems: 'center',
-    },
-    Titulo:{
-      fontSize: 30,
-      textAlign: 'center',
-      color: 'black',
-      fontWeight: 'bold',
-      color: '#49a300',
-      marginTop: 20
+  container: {
+    marginVertical: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    marginVertical: 10,
+    width: 300,
+    height: 350
+  },
+});
 
-    },
-    card:{
-       width:350,
-       height:400,
-       marginTop: 10,
-       borderRadius: 10,
-       alignItems:'center',
-       backgroundColor: 'white'
-    },
-    texto:{
-      textAlign: 'center',
-      fontSize: 15,
-      fontWeight: 'bold',
-      marginTop: 15,
-      backgroundColor: 'orange',
-      borderRadius: 20
-    }
-})
 export default Page_perfil;
